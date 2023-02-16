@@ -20,4 +20,6 @@ from loonietracker import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("",views.home,name="home"),
+    path('expenses/<int:expense_id>/manage/',views.expense,name='expense'),
+    path('expenses/',views.expenses,name='expenses')
 ]

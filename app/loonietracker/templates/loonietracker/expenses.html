@@ -1,0 +1,9 @@
+{% if expenses %}
+ <ul>
+    {% for expense in expenses %}
+    <li><a href="/expenses/{{expense.id}}/manage">{{expense.id}}</a></li>
+    {% endfor %}
+ </ul>
+ {% else %}
+    <p>You have no expenses.</p>
+{% endif %}

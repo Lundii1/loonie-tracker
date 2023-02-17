@@ -1,16 +1,18 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.http import HttpResponse
 from django.template import loader
-
-from loonietracker.models import Expense
+from django import forms
+from loonietracker.models import Expense, ExpenseForm
 # Create your views here.
 def home(request):
-    return HttpResponse("Hello, Django!")
-def expenses(request):
-    expense_list = Expense.objects.filter()
-    template = loader.get_template('loonietracker/expenses.html')
+    expense_list = Expense.objects.all()
+    total =  Expense.total()
+    totalMonth = Expense.totalMonth()
+    template = loader.get_template('loonietracker/home.html')
     context = {
         'expenses': expense_list,
+        'total': total,
+        'totalMonth':totalMonth,
     }
     return HttpResponse(template.render(context,request))
 def expense(request, expense_id):
@@ -20,3 +22,14 @@ def expense(request, expense_id):
         'expense': expense,
     }
     return HttpResponse(template.render(context,request))
+def expenseCreation(request):
+    template = loader.get_template('loonietracker/expense_creation.html')
+    context = {}
+    if request.method == 'POST':
+        form = ExpenseForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('../')
+    else:
+        form = ExpenseForm()
+    return render(request, 'loonietracker/expense_creation.html', {'form': form})

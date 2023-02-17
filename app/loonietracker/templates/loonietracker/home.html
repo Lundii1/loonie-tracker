@@ -1,0 +1,65 @@
+{% extends 'header.html' %}
+{% block content %}
+  <div class="container my-5">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Total Expenses</h5>
+            {% if total == none %}
+            <p class="card-text">$0</p>
+            {% else %}
+            <p class="card-text">${{total}}</p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Expenses This Month</h5>
+            {% if totalMonth == none %}
+            <p class="card-text">$0</p>
+            {% else %}
+            <p class="card-text">${{totalMonth}}</p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row my-5">
+      <div class="col-md-12">
+        <div class="d-flex align-items-center justify-content-between">
+            <h2>Recent Expenses</h2>
+            <a href="{% url 'add a new expense' %}" class="btn btn-success">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                <path d="M8 3.5a.5.5 0 0 1 .5.5v3.5h3.5a.5.5 0 0 1 0 1H8.5v3.5a.5.5 0 0 1-1 0V8.5H3.5a.5.5 0 0 1 0-1h3.5V4a.5.5 0 0 1 .5-.5z" />
+              </svg>
+              Add Expense
+            </a>
+          </div>
+        <table class="table table-striped">
+          <thead>
+            {% if expenses %}
+              <tr>
+                <th>Date</th>
+                <th>Amount</th>
+                <th>Category</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for expense in expenses %}
+                <tr>
+                  <th><a href="/expenses/{{expense.id}}/manage">{{expense.date}}</a></th>
+                  <th>${{expense.amount}}</th>
+                  <th>{{expense.category.name}}</th>
+                </tr>
+              {% endfor %}
+            </tbody>
+            {% else %}
+              <p>You have no expenses.</p>
+            {% endif %}
+          </table>
+        </div>
+      </div>
+{% endblock %}
